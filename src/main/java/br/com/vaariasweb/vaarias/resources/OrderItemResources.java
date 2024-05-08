@@ -1,6 +1,7 @@
 package br.com.vaariasweb.vaarias.resources;
 
-import br.com.vaariasweb.vaarias.entities.Order;
+import br.com.vaariasweb.vaarias.entities.OrderItem;
+import br.com.vaariasweb.vaarias.repositories.OrderItemRepository;
 import br.com.vaariasweb.vaarias.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +14,20 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/orders")
-public class OrderResources {
+@RequestMapping(value = "/orders_itens")
+public class OrderItemResources {
     @Autowired
-    private OrderRepository repository;
+    private OrderItemRepository repository;
 
     @GetMapping
-    public ResponseEntity<List<Order>> getAll() {
-        List<Order> orders = repository.findAll();
-        return ResponseEntity.ok().body(orders);
+    public ResponseEntity<List<OrderItem>> getAll() {
+        List<OrderItem> orderItems = repository.findAll();
+        return ResponseEntity.ok().body(orderItems);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Order>> getById(@PathVariable Long id) {
-        Optional<Order> order = repository.findById(id);
+    public ResponseEntity<Optional<OrderItem>> getById(@PathVariable Long id) {
+        Optional<OrderItem> order = repository.findById(id);
         return ResponseEntity.ok().body(order);
     }
 }

@@ -2,9 +2,11 @@ package br.com.vaariasweb.vaarias.config;
 
 import br.com.vaariasweb.vaarias.entities.Book;
 import br.com.vaariasweb.vaarias.entities.Order;
+import br.com.vaariasweb.vaarias.entities.OrderItem;
 import br.com.vaariasweb.vaarias.entities.enums.PaymentMethod;
 import br.com.vaariasweb.vaarias.entities.User;
 import br.com.vaariasweb.vaarias.repositories.BookRepository;
+import br.com.vaariasweb.vaarias.repositories.OrderItemRepository;
 import br.com.vaariasweb.vaarias.repositories.OrderRepository;
 import br.com.vaariasweb.vaarias.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Configuration
 @Profile("test")
@@ -24,6 +27,8 @@ public class TestConfig implements CommandLineRunner {
     private BookRepository bookRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -55,10 +60,16 @@ public class TestConfig implements CommandLineRunner {
 
         bookRepository.saveAll(Arrays.asList(b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15, b15, b16, b17, b18, b19, b20));
 
+        OrderItem oi1 = new OrderItem(null, new HashSet<>(Arrays.asList(b1,b3,b2)), b1.getPrice());
+        OrderItem oi2 = new OrderItem(null, new HashSet<>(Arrays.asList(b2)), b2.getPrice());
+        OrderItem oi3 = new OrderItem(null, new HashSet<>(Arrays.asList(b2,b1)), b2.getPrice());
 
-        Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, PaymentMethod.CREDIT_CARD);
-        Order o2 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, PaymentMethod.PIX);
-        Order o3 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u2, PaymentMethod.CREDIT_CARD);
+        orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3));
+
+        Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, PaymentMethod.CREDIT_CARD, new HashSet<>(Arrays.asList(oi1)));
+        Order o2 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u1, PaymentMethod.PIX, new HashSet<>(Arrays.asList(oi2)));
+        Order o3 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), u2, PaymentMethod.CREDIT_CARD, new HashSet<>(Arrays.asList(oi3)));
+
 
         orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 

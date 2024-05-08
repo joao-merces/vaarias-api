@@ -6,11 +6,14 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,15 +23,18 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
     private PaymentMethod paymentMethod;
+    @OneToMany(mappedBy = "order")
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order() {
     }
 
-    public Order(Long id, Instant moment, User user, PaymentMethod paymentMethod) {
+    public Order(Long id, Instant moment, User user, PaymentMethod paymentMethod, Set<OrderItem> orderItems) {
         this.id = id;
         this.moment = moment;
         this.user = user;
         this.paymentMethod = paymentMethod;
+        this.orderItems = orderItems;
     }
 
     public Long getId() {
@@ -61,6 +67,22 @@ public class Order implements Serializable {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Double getTotal(Set<OrderItem> orderItems) {
+        Double total = 0.0;
+        for(OrderItem orderItem : orderItems) {
+            total += orderItem.getSubTotalPrice();
+        }
+        return total;
     }
 
     @Override
