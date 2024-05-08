@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/users")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserResources {
     @Autowired
     private UserRepository repository;

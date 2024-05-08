@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/books")
-@CrossOrigin(origins = "http://localhost:3000")
 public class BookResources {
     @Autowired
     private BookRepository repository;

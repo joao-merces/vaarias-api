@@ -8,7 +8,6 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_book")
-@CrossOrigin(origins = "http://localhost:3000")
 public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
