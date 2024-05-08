@@ -1,12 +1,14 @@
 package br.com.vaariasweb.vaarias.entities;
 
 import jakarta.persistence.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_user")
+@CrossOrigin(origins = "http://localhost:3000")
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -16,16 +18,18 @@ public class User implements Serializable {
     private String surname;
     private String email;
     private String password;
+    private String phone;
 
     public User() {
     }
 
-    public User(Long id, String name, String surname, String email, String password) {
+    public User(Long id, String name, String surname, String email, String password, String phone) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.phone = phone;
     }
 
     public Long getId() {
@@ -68,6 +72,13 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     @Override
     public boolean equals(Object o) {
